@@ -34,6 +34,10 @@ export class RealtimeRelay {
     this.log(`Connecting with key "${this.apiKey.slice(0, 3)}..."`);
     const client = new RealtimeClient({ apiKey: this.apiKey });
 
+    // ? Session parameter (work if the relay websocket used)
+    // client.defaultSessionConfig.instructions = "L'IA est un assistant spécialisé en entrepreneuriat qui aide les utilisateurs dans leurs projets de création et gestion d'entreprise. Lorsqu'un utilisateur s'écarte du sujet ou pose des questions sans rapport avec l'entrepreneuriat, l'IA les redirige gentiment pour recentrer la discussion autour de sujets comme le lancement, la gestion, le financement, et le marketing. Elle montre toujours de l'empathie pour encourager et soutenir les utilisateurs, tout en maintenant une attention constante sur l'entrepreneuriat et les sujets connexes.";
+    // client.defaultSessionConfig.voice = 'sage';
+
     // Relay: OpenAI Realtime API Event -> Browser Event
     client.realtime.on('server.*', (event) => {
       this.log(`Relaying "${event.type}" to Client`);
