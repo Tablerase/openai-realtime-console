@@ -17,8 +17,7 @@ import { RealtimeClient } from '@openai/realtime-api-beta';
 import { ItemType } from '@openai/realtime-api-beta/dist/lib/client.js';
 import { WavRecorder, WavStreamPlayer } from '../lib/wavtools/index.js';
 import { WavRenderer } from '../utils/wav_renderer';
-import { instructions } from '../utils/conversation_config.js';
-import { voice } from '../utils/conversation_config.js';
+import { instructions, voice, mermaid_instructions } from '../utils/conversation_config.js';
 
 import { X, Edit, Zap, ArrowUp, ArrowDown } from 'react-feather';
 import { Button } from '../components/button/Button';
@@ -445,7 +444,7 @@ export function ConsolePage() {
             messages: [
               {
                   role: 'system',
-                  content: 'You are an assistant that generates Mermaid diagram code based on the given description. The mermaid diagram code output must be raw string. no markdown format',
+                  content: mermaid_instructions,
               },
               {
                   role: 'user',
@@ -461,7 +460,17 @@ export function ConsolePage() {
 
         // Render the Mermaid diagram
         const { svg } = await mermaid.render('generatedDiagram', mermaidCode);
-        setDiagramSvg(svg);
+        setDiagramSvg(svg); 
+
+        // Create a svg file into coverage
+        // const blob = new Blob([svg], { type: 'image/svg+xml' });
+        // const url = URL.createObjectURL(blob);
+        // const a = document.createElement('a');
+        // a.href = url;
+        // a.download = '/coverage/diagram.svg';
+        // a.click();
+        // URL.revokeObjectURL(url);
+
 
         return { ok: true };
       }
@@ -747,32 +756,6 @@ export function ConsolePage() {
           </div>
         </div>
         <div className="content-right">
-          <div className="content-block map">
-            <div className="content-block-title">get_weather()</div>
-            <div className="content-block-title bottom">
-              {marker?.location || 'not yet retrieved'}
-              {!!marker?.temperature && (
-                <>
-                  <br />
-                  🌡️ {marker.temperature.value} {marker.temperature.units}
-                </>
-              )}
-              {!!marker?.wind_speed && (
-                <>
-                  {' '}
-                  🍃 {marker.wind_speed.value} {marker.wind_speed.units}
-                </>
-              )}
-            </div>
-            <div className="content-block-body full">
-              {coords && (
-                <Map
-                  center={[coords.lat, coords.lng]}
-                  location={coords.location}
-                />
-              )}
-            </div>
-          </div>
           <div className="content-block kv">
             <div className="content-block-title">set_memory()</div>
             <div className="content-block-body content-kv">
